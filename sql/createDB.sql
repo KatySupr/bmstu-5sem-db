@@ -47,5 +47,5 @@ CREATE TABLE labs.viewed_anime (
   id_user int not null references labs.users (id),
   start_at timestamp not null,
   end_at timestamp not null check (end_at > start_at),
-  if_finish int not null check (if_finish < 2 and if_finish > -1)
+  rating int check (rating >= 0 and rating <= 10)
 );
