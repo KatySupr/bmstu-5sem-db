@@ -1,10 +1,10 @@
 import requests
 from bs4 import BeautifulSoup
 
-pages = range(1, 60)
-with open('./links/anime_links.txt', 'w') as anime_links:
+pages = range(1, 15)
+with open('./links/anime_links_new.txt', 'w') as anime_links:
     for page in pages:
-        url = 'https://animego.org/anime/filter/type-is-tv/status-is-released/apply?sort=rating&direction=desc&page=' + str(page)
+        url = 'https://animego.org/anime/filter/type-is-tv/status-is-released/apply' # + str(page)
         response = requests.get(url)
         soup = BeautifulSoup(response.text, 'lxml')
 
@@ -16,6 +16,6 @@ with open('./links/anime_links.txt', 'w') as anime_links:
             ind = hrefval.rfind('-')
             hrefval = hrefval[:ind+1] + 'm' + hrefval[ind+1:]
             urls.append(hrefval)
-            # print(link)
+            print(link)
         for elem in urls:
             anime_links.write(elem + '\n')

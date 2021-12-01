@@ -22,4 +22,4 @@ with open('./data/viewed.csv', 'a', newline='') as file:
 
     # writer.writeheader()
     
-    writer.writerows(schema.create(iterations=100))
+    writer.writerows(schema.create(iterations=200))

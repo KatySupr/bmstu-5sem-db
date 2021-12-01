@@ -5,6 +5,13 @@ from mimesis import Generic
 import random
 import csv
 
+def mpaa(mpaa):
+    mpaa_array = ('G', 'PG', 'PG-13', 'R', 'NC-17')
+    if mpaa not in mpaa_array:
+        mpaa = random.choice(mpaa_array)
+
+    return mpaa
+
 def mounth_parse(mounth):
     if mounth[:-1] == 'январ':
         return 1
@@ -41,26 +48,21 @@ def date_parse(dat: str):
         start = Generic().datetime.date(int(start[2]), mounth_parse(start[1]), int(start[0]))
         end = Generic().datetime.date(int(end[2]), mounth_parse(end[1]), int(end[0]))
     except BaseException:
-        start = Generic().datetime.date(start=1985, end=2015)
-        end = Generic().datetime.date(start=2015, end=2021)
+        start = Generic().datetime.date(start=1985, end=1995)
+        end = Generic().datetime.date(start=1996, end=2021)
     
     return start, end
 
-with open('./links/anime_links/11.txt', 'r') as f:
-    with open('./data/animes.csv', 'a', newline='') as file:
-        field_names = ['title', 'studio_id', 'episodes', 'mpaa', 'start', 'end', 'rating']
+genres = ['Кодомо', 'Сёнэн', 'Сёдзё', 'Сэйнэн', 'Дзёсэй']
+
+with open('./links/anime_links/13.txt', 'r') as f:
+    with open('./data/animes_new.csv', 'a', newline='') as file:
+        field_names = ['title', 'studio_id', 'episodes', 'mpaa', 'start', 'end', 'rating', 'genre']
         writer = csv.DictWriter(file, fieldnames=field_names)
 
         # writer.writeheader()
-        
-        # writer.writerows(animes)
-        # animes = []
-        # k = 1
-        for line in f.readlines():
-            # k += 1
-            # if k > 100:
-            #     break
 
+        for line in f.readlines():
             anime = dict()
 
             url = line[:-1]
@@ -96,16 +98,9 @@ with open('./links/anime_links/11.txt', 'r') as f:
                     anime['start'] = Generic().datetime.date(start=1999, end=2015)
                     anime['end'] = Generic().datetime.date(start=2015, end=2021)
 
-                anime['mpaa'] = anime_info[6].text
+                anime['mpaa'] = mpaa(anime_info[6].text)
 
-            # animes.append(anime)
+                anime['genre'] = random.choice(genres)
+
             writer.writerow(anime)
             print(anime)
-
-# with open('./data/animes.csv', 'a', newline='') as file:
-#     field_names = ['title', 'studio_id', 'episodes', 'mpaa', 'start', 'end']
-#     writer = csv.DictWriter(file, fieldnames=field_names)
-
-#     writer.writeheader()
-    
-#     writer.writerows(animes)
